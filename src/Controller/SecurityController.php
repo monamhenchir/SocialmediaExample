@@ -16,7 +16,7 @@ class SecurityController extends AbstractController
     {
         if($this->isGranted("IS_AUTHENTICATED_FULLY"))
         {
-            return $this->redirectToRoute("main");
+            return $this->redirectToRoute("profile");
         }
 
         // get the login error if there is one
@@ -33,18 +33,5 @@ class SecurityController extends AbstractController
     public function logout()
     {
         throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
-    }
-    /**
-     * @Route("/main", name="main")
-     */
-    public function main(AuthenticationUtils $authenticationUtils){
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user = $this->getUser();
-            return $this->render('security/home.html.twig',[
-                'name' => $user->getFullName()
-                
-            ]);
-        
-        
     }
 }
