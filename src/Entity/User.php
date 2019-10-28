@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -39,6 +41,22 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $FullName;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="users")
+     */
+    private $amis;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="amis")
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->amis = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -126,6 +144,60 @@ class User implements UserInterface
     public function setFullName(string $FullName): self
     {
         $this->FullName = $FullName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getAmis(): Collection
+    {
+        return $this->amis;
+    }
+
+    public function addAmi(self $ami): self
+    {
+        if (!$this->amis->contains($ami)) {
+            $this->amis[] = $ami;
+        }
+
+        return $this;
+    }
+
+    public function removeAmi(self $ami): self
+    {
+        if ($this->amis->contains($ami)) {
+            $this->amis->removeElement($ami);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(self $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addAmi($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(self $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeAmi($this);
+        }
 
         return $this;
     }
