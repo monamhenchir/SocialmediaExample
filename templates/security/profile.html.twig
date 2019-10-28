@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+            <h3 class="container-fluid mt-5">
+                {{ user.FullName | upper }}
+                <small class="text-muted">Profile</small>
+            </h3>
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <table class="container-fluid mt-5">
+            {% for user in users %}
+                <tr><td>
+                        {% if app.user != user %}
+                        <form method="post">
+                            <p class="h3">{{ user.FullName }}</p>
+                            <a type="submit" class="btn btn-primary" href="{{ path('addami', {'id':user.id}) }}">Add Friend</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <td> Empty </td>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

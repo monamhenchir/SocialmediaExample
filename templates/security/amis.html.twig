@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <table class="container-fluid mt-5">
+            {% for ami in amis %}
+            <tr><td><p class="h4">{{ ami.FullName }}</p></td></tr>
+                {% else %}
+                <td> Empty </td>
+
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
