@@ -52,10 +52,16 @@ class User implements UserInterface
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Tweet", mappedBy="user")
+     */
+    private $Tweets;
+
     public function __construct()
     {
         $this->amis = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->Tweets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,6 +203,37 @@ class User implements UserInterface
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             $user->removeAmi($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tweet[]
+     */
+    public function getTweets(): Collection
+    {
+        return $this->Tweets;
+    }
+
+    public function addTweet(Tweet $tweet): self
+    {
+        if (!$this->Tweets->contains($tweet)) {
+            $this->Tweets[] = $tweet;
+            $tweet->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTweet(Tweet $tweet): self
+    {
+        if ($this->Tweets->contains($tweet)) {
+            $this->Tweets->removeElement($tweet);
+            // set the owning side to null (unless already changed)
+            if ($tweet->getUser() === $this) {
+                $tweet->setUser(null);
+            }
         }
 
         return $this;

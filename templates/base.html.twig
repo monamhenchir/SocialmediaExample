@@ -9,7 +9,7 @@
     </head>
     <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">S-Media</a>
+        <a class="navbar-brand" href="/">S-Media</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -20,7 +20,7 @@
                     <a class="nav-link" href="{{ path('accueil')}}">Accueil<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
+                    <a class="nav-link" href="{{path('profile')}}">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('amis')}}">Amis</a>
@@ -33,7 +33,8 @@
                     {% if app.user %}
                         <a class="btn btn-primary my-2 my-sm-0" href="{{ path('app_logout') }}">Deconnexion</a>
                     {% else %}
-                        <a class="btn btn-primary my-2 my-sm-0" href="{{ path('app_login') }}">Connection</a>
+                        <a class="btn btn-primary my-2 my-sm-0" href="{{ path('app_login') }}">Connexion</a>
+                        <a class="btn btn-primary my-2 my-sm-0" href="{{ path('app_register') }}">Inscription</a>
                     {% endif %}
             </div>
         </div>
