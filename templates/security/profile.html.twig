@@ -1,10 +1,18 @@
 {% extends 'base.html.twig' %}
-
+{% block title user.FullName|upper %}
 {% block body %}
     <div class="container">
             <h3 class="container-fluid mt-5">
                 {{ user.FullName | upper }}
                 <small class="text-muted">Profile</small>
             </h3>
+        {% for tweet in app.user.tweets %}
+                <div class="container-fluid mt-5">
+                    <p>
+                    <h4>{{ tweet.user.FullName }}</h4>{{ tweet.content }}
+                    </p>
+                    <hr>
+                </div>
+        {% endfor %}
     </div>
 {% endblock %}

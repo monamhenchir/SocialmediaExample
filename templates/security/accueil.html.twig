@@ -1,14 +1,36 @@
 {% extends 'base.html.twig' %}
+{% block title 'Accueil' %}
 {% block body %}
     <div class="container">
+
+            {{ form_start(tweetform) }}
+            {{ form_row(tweetform.content) }}
+            <button class="btn btn-primary" type="submit">Post</button>
+            {{ form_end(tweetform) }}
+
         <table class="container-fluid mt-5">
             {% for user in users %}
+                       {% for tweet in user.tweets %}
+        <div class="container-fluid mt-5">
+                <p>
+                <h4>{{ tweet.user.FullName }}</h4>{{ tweet.content }}
+            </p>
+        <hr>
+        </div>
+                {% endfor %}
                 <tr><td>
                         {% if app.user != user %}
+                        <div class="col-4">
                         <form method="post">
-                            <p class="h3">{{ user.FullName }}</p>
-                            <a type="submit" class="btn btn-primary" href="{{ path('addami', {'id':user.id}) }}">Add Friend</button>
+                            <div class="container">
+                            <p class="h6">{{ user.FullName }}</p>
+                            {% if user not in app.user.Amis %}
+                                <a type="submit" class="btn btn-secondary" href="{{ path('addami', {'id':user.id}) }}">Add Friend</a></div>
+                                {% else %}
+                               Friend
+                            {% endif %}
                         </form>
+                        </div>
                         {% endif %}
                     </td>
                 </tr>

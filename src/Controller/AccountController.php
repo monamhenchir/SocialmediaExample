@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Tweet;
 use App\Entity\User;
+use App\Form\TweetType;
+use App\Repository\TweetRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ProfileController extends AbstractController
+class AccountController extends AbstractController
 {
     /**
      * @Route("/profile", name="profile")
@@ -40,12 +43,21 @@ class ProfileController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/Accueil" , name="accueil")
      */
-    public function Accueil(){
+    public function Accueil(Request $request, ObjectManager $manager){
+        $tweet = new Tweet;
+        $form = $this->createForm(TweetType::class,$tweet);
+        $form->handleRequest($request);
+        $user = $this->getUser();
+        if($form->isSubmitted() && $form->isValid()){
+            $tweet -> setUser($user);
+            $manager->persist($tweet);
+            $manager->flush();
+            return $this->redirectToRoute('accueil');
+        }
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
-
-
         return $this->render('security/accueil.html.twig',[
-            'users' => $users
+            'users' => $users,
+            'tweetform' => $form->createView()
         ]);
     }
     /**
